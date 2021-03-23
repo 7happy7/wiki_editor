@@ -27,7 +27,7 @@
     var _, bef = '', aft = '';
     while((_ = s[i1--]) && _ !== '\n') (bef = _ + bef, limit++);
     while((_ = s[i2++]) && _ !== '\n') (aft += _);
-    var m = bef.match(/\[{2}([^\[\/]+?)$/);
+    var m = bef.match(/\[{2}([^\[\/].*?)$/);
     i1 += 4;
     m && (i1 += m.index);
     var d;
