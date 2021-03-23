@@ -1,13 +1,23 @@
 (async() => {
-  var _get = async n => await (await fetch(chrome.extension.getURL(n))).json();
-  var command = _get('/source/command.json');
-  var config = _get('/source/config.json');
+  var _jsonize = async (...fch) => await Promise.all(fch.map(f => f.json()));
+  var _fetches = async (...dir) => await Promise.all(dir.map(d => fetch(chrome.extension.getURL(d))));
+  var _getJSON = async (...dir) => await _jsonize(...(await _fetches(...dir)));
+  
+  var [command, config] = await _getJSON('/source/command.json', '/source/config.json');
   
   var com = {body: Object.assign({}, command),key: Object.keys(command)};
-  var t = document.querySelector(config.textarea_selector);
+  
+  var t = await new Promise(r => {
+    var _f = () => {
+      var _t = document.querySelector(config.textarea_selector);
+      _t ? r(_t) : setTimeout(_f, 100);
+    };
+    _f();
+  });
+  
   var w = document.createElement('div'), s = document.createElement('style');
   w.classList.add('wiki_ed_window');
-  s.innerHTML = `.wiki_ed_window {background: #fafafa;border: solid #555;border-width: 4px 0;box-shadow: 0px 0px 3px #aaa;margin: 2em 0;min-height: 15em;min-width: 25em;padding: 1em;position: fixed;right: 1em;top: 10%;} .wiki_ed_window ul {padding: 0 0 0 1em;} .wiki_ed_window li {display: grid;grid-template-columns: 10em 1fr;} .wiki_ed_window li b {color: #aaa;} .wiki_ed_window li input:checked + b {color: #333;} .wiki_ed_button {background: #f0f0f0;border: solid #555;border-width: 3px 0;box-shadow: 0 0 3px #888;color: #888;cursor: pointer;display: block;font-size: .9rem;font-weight: bold;margin: .45em 0;padding: .5rem 2rem;text-align: center;transition: all .25s;} .wiki_ed_button:hover {background: transparent;border-color: #901;text-decoration: none;}`;
+  s.innerHTML = config.style;
   t.insertAdjacentElement('beforebegin', w);
   document.head.appendChild(s);
   var f = e => {
