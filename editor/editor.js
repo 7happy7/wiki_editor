@@ -4,9 +4,7 @@
   var _getJSON = async (...dir) => await _jsonize(...(await _fetches(...dir)));
   
   var [command, config] = await _getJSON('/source/command.json', '/source/config.json');
-  
   var com = {body: Object.assign({}, command),key: Object.keys(command)};
-  
   var t = await new Promise(r => {
     var _f = () => {
       var _t = document.querySelector(config.textarea_selector);
