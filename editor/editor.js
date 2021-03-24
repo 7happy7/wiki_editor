@@ -25,7 +25,7 @@
     var _, bef = '', aft = '';
     while((_ = s[i1--]) && _ !== '\n') (bef = _ + bef, limit++);
     while((_ = s[i2++]) && _ !== '\n') (aft += _);
-    var m = bef.match(/\[{2}([^\[\/].*?)$/);
+    var m = bef.match(/\[{2}([a-z0-9 ]*?)$/i);
     i1 += 4;
     m && (i1 += m.index);
     var d;
@@ -43,6 +43,7 @@
         return [_[1], _[2]];
       }));
     }) : [];
+    m && console.log(d, m);
     var x = m && n.length !== 1 ? com.key.filter(k => k.match(new RegExp('^' + m[1]))) : [];
     n.length && (n = n.filter(k => (i - i1 - 1) < d[1].length));
     var opt = n.length == 1 && com.body[n[0]].option;
