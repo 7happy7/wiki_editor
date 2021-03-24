@@ -126,7 +126,7 @@
         };
         a.onclick = e => {
           var body = wrap.name + wrap.option + ']]' + (wrap.inline ? '' : '\n');
-          t.value = wrap.bef + body + (wrap.inline ? '' : '\n') + (wrap.noclose ? '' : (`[[/${wrap.name}]]` + (wrap.inline ? '' : '\n'))) + wrap.aft;
+          t.value = wrap.bef + body + (wrap.inline ? '' : '\n') + (wrap.noclose ? '' : (`[[/${wrap.name.split(' ')[0]}]]` + (wrap.inline ? '' : '\n'))) + wrap.aft;
           var i = wrap.index + body.length;
           t.setSelectionRange(i, i);
           t.focus();
