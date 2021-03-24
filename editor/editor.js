@@ -40,7 +40,9 @@
       var _ = d[1].match(new RegExp('^' + k + '(.*?)$'));
       return _ && (cur[k] = (_[1].match(/(?:^| )\S+?\=".*?"/g) || []).map(v => {
         var _ = v.match(/(?:^| )(\S+?)\="(.*?)"/);
-        return [_[1], _[2]];
+        var _d = com.body[k];
+        _d = _d && _d.option[_[1]];
+        return [_[1], _[2], true, _d && _d[2]];
       }));
     }) : [];
     m && console.log(d, m);
@@ -84,6 +86,17 @@
         var tx = document.createElement('input');
         tx.type = 'text';
         li.appendChild(tx);
+        if(e[3]) {
+          var dl = document.createElement('datalist');
+          dl.id = `wiki_ed_datalist_${e[0]}`;
+          ul.appendChild(dl);
+          tx.setAttribute('list', dl.id);
+          e[3].forEach(n => {
+            var sg = document.createElement('option');
+            sg.value = n;
+            dl.appendChild(sg);
+          });
+        }
         tx.value = e[1];
         ch._name = e[0];
         ch._text = tx;
