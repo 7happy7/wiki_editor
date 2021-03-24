@@ -3,7 +3,8 @@
     "option":{
       "show":["+ show",true],
       "hide":["- hide",true],
-      "hideLocation":["both",false]
+      "folded":["no",false],
+      "hideLocation":["both",false,["top","both","bottom"]]
     },
     "inline":false,
     "noclose":false
@@ -21,10 +22,10 @@
       "rating":[">=0",true],
       "votes":["",false],
       "offset":["",false],
-      "range":["",false],
+      "range":[".",false,[".","before","after","others"]],
       "name":["",false],
       "fullname":["",false],
-      "order":["created_at desc",true],
+      "order":["created_at desc",true,["name","fullname","title","created_by","created_at","updated_at","size","rating","votes","revisions","comments","random"]],
       "limit":["100",false],
       "perPage":["250",false],
       "reverse":["yes",false],
@@ -70,7 +71,7 @@
   },
   "code":{
     "option":{
-      "type":["CSS",true]
+      "type":["CSS",true,["PHP","HTML","CPP","CSS","DIFF","DTD","JAVA","JAVASCRIPT","PERL","PYTHON","RUBY","XML"]]
     },
     "inline":false,
     "noclose":false
