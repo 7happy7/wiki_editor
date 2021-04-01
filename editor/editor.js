@@ -1,4 +1,8 @@
 (async() => {
+  /* debug */
+  var debug_mode = false;
+  var _log_ = (...arg) => debug_mode && console.log.call(console, ...arg);
+  
   var _jsonize = async (...fch) => await Promise.all(fch.map(f => f.json()));
   var _fetches = async (...dir) => await Promise.all(dir.map(d => fetch(chrome.extension.getURL(d))));
   var _getJSON = async (...dir) => await _jsonize(...(await _fetches(...dir)));
@@ -49,13 +53,13 @@
       }));
     }) : [];
 
-    m && console.log(d, m);
+    m && _log_(d, m);
 
     var x = m && n.length !== 1 ? com.key.filter(k => k.match(new RegExp('^' + m[1]))) : [];
     n.length && (n = n.filter(k => (i - i1 - 1) < d[1].length));
     var opt = n.length == 1 && com.body[n[0]].option;
     opt = opt && Object.keys(opt).map(k => [k, ...opt[k]]).filter(v => !cur[n[0]].find(o => o[0] == v[0]));
-    console.log( `"${bef}"`, `"${aft}"`, i1, i, x, cur, opt, e.type );
+    _log_( `"${bef}"`, `"${aft}"`, i1, i, x, cur, opt, e.type );
     w.innerHTML = '';
     if(n.length) {
       w._tagName = Object.keys(cur)[0]; 
