@@ -40,14 +40,17 @@
     var cur = {};
     var n = d ? com.key.filter(k => {
       var _ = d[1].match(new RegExp('^' + k + '(.*?)$'));
-      return _ && (cur[k] = (_[1].match(/(?:^| )\S+?\=".*?"/g) || []).map(v => {
-        var _ = v.match(/(?:^| )(\S+?)\="(.*?)"/);
+      return _ && (cur[k] = (_[1].match(/(?:^| ?)(\S+?)(?:\="(.*?)"|(?: |$))/g) || []).map((v, i, a) => {
+
+        var _ = v.match(/(?:^| ?)(\S+?)(?:\="(.*?)"|(?: |$))/);
         var _d = com.body[k];
         _d = _d && _d.option[_[1]];
-        return [_[1], _[2], true, _d && _d[2]];
+        return [_[2] ? _[1] : null, _[2] || _[1], true, _d && _d[2]];
       }));
     }) : [];
+
     m && console.log(d, m);
+
     var x = m && n.length !== 1 ? com.key.filter(k => k.match(new RegExp('^' + m[1]))) : [];
     n.length && (n = n.filter(k => (i - i1 - 1) < d[1].length));
     var opt = n.length == 1 && com.body[n[0]].option;
@@ -68,7 +71,7 @@
       };
 
       var _f = e => {
-        var _ = cond.filter(c => c.checked).map(c => ` ${c._name}="${c._text.value}"`);
+        var _ = cond.filter(c => c.checked).map(c => c._name ? ` ${c._name}="${c._text.value}"` : ` ${c._text.value}`);
         var body = wrap.name + _.join('');
         t.value = wrap.bef + body + wrap.aft;
         t.setSelectionRange(wrap.index, wrap.index + body.length);
@@ -78,17 +81,23 @@
       var lab = (e, x) => {
         var li = document.createElement('li');
         ul.appendChild(li);
-        var lb = document.createElement('label');
-        lb.innerHTML = `<b>${e[0]}</b>`;
-        li.appendChild(lb);
+
         var ch = document.createElement('input');
         ch.type = 'checkbox';
         ch.checked = x;
-        lb.insertAdjacentElement('afterbegin', ch);
+
+        if(e[0]) {
+          var lb = document.createElement('label');
+          lb.innerHTML = `<b>${e[0]}</b>`;
+          li.appendChild(lb);
+          lb.insertAdjacentElement('afterbegin', ch);
+        }
+
         var tx = document.createElement('input');
         tx.type = 'text';
         li.appendChild(tx);
-        if(e[3]) {
+
+        if(e[0] && e[3]) {
           var dl = document.createElement('datalist');
           dl.id = `wiki_ed_datalist_${e[0]}`;
           ul.appendChild(dl);
