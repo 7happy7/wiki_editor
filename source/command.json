@@ -123,10 +123,16 @@
     "inline":true,
     "noclose":false
   },
+  "size":{
+    "option":{},
+    "inline":true,
+    "noclose":false
+  },
   "span":{
     "option":{
       "style":["",false],
-      "class":["",true]
+      "class":["",true],
+      "id":["",false]
     },
     "inline":true,
     "noclose":false
