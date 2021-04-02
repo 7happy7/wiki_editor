@@ -7,8 +7,14 @@
   var _fetches = async (...dir) => await Promise.all(dir.map(d => fetch(chrome.extension.getURL(d))));
   var _getJSON = async (...dir) => await _jsonize(...(await _fetches(...dir)));
   
-  var [command, config] = await _getJSON('/source/command.json', '/source/config.json');
-  var com = {body: Object.assign({}, command),key: Object.keys(command)};
+  var [command, config] = await _getJSON(
+    '/source/command.json',
+    '/source/config.json'
+  );
+  var com = {
+    body: Object.assign({}, command),
+    key: Object.keys(command)
+  };
   
   /* ***** */
   var t = await new Promise(r => {
@@ -32,20 +38,21 @@
     while((_ = s[i1--]) && _ !== '\n') (bef = _ + bef, limit++);
     while((_ = s[i2++]) && _ !== '\n') (aft += _);
     var m = bef.match(/\[{2}([a-z0-9 ]*?)$/i);
-    i1 += 4;
+    i1 += 4;// '[[' (2) + offset (2)
     m && (i1 += m.index);
     var d;
     if(m) {
       var _R = /\[{2}([^\/].*?)\]{2}/g;
       var _S = bef + aft;
       var _V;
+      /* detect focused module */
       while((_V = _R.exec(_S))) ((_V.index <= limit && limit <= (_V.index + _V[0].length)) && (d = _V));
     }
     var cur = {};
     var n = d ? com.key.filter(k => {
       var _ = d[1].match(new RegExp('^' + k + '(.*?)$'));
       return _ && (cur[k] = (_[1].match(/(?:^| ?)(\S+?)(?:\="(.*?)"|(?: |$))/g) || []).map((v, i, a) => {
-
+        _log_(a);
         var _ = v.match(/(?:^| ?)(\S+?)(?:\="(.*?)"|(?: |$))/);
         var _d = com.body[k];
         _d = _d && _d.option[_[1]];
@@ -75,7 +82,7 @@
       };
 
       var _f = e => {
-        var _ = cond.filter(c => c.checked).map(c => c._name ? ` ${c._name}="${c._text.value}"` : ` ${c._text.value}`);
+        var _ = cond.filter(c => c.checked).map(c => c._name ? ` ${c._name}="${c._text.value}"` : c._text.value ? ` ${c._text.value}` : '');
         var body = wrap.name + _.join('');
         t.value = wrap.bef + body + wrap.aft;
         t.setSelectionRange(wrap.index, wrap.index + body.length);
