@@ -18,11 +18,11 @@
   
   /* ***** */
   var t = await new Promise(r => {
-    var _f = () => {
+    var _f;
+    (_f = () => {
       var _t = document.querySelector(config.textarea_selector);
       _t ? r(_t) : setTimeout(_f, 100);
-    };
-    _f();
+    })();
   });
   
   var w = document.createElement('div'), s = document.createElement('style');
