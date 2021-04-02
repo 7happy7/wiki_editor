@@ -24,9 +24,12 @@
       _t ? r(_t) : setTimeout(_f, 100);
     })();
   });
-  
-  var w = document.createElement('div'), s = document.createElement('style');
-  w.classList.add('wiki_ed_window');
+  var elm = (tagName, ...className) => {
+    var e = document.createElement(tagName);
+    className.forEach(c => e.classList.add(c));
+    return e;
+  };
+  var w = elm('div', 'wiki_ed_window'), s = elm('style');
   s.innerHTML = config.style;
   t.insertAdjacentElement('beforebegin', w);
   document.head.appendChild(s);
@@ -71,7 +74,7 @@
     if(n.length) {
       w._tagName = Object.keys(cur)[0]; 
       w.innerHTML = `<h1>${w._tagName}</h1>`;
-      var ul = document.createElement('ul');
+      var ul = elm('ul');
       w.appendChild(ul);
       var cond = [];
       var wrap = {
@@ -90,31 +93,31 @@
       }
 
       var lab = (e, x) => {
-        var li = document.createElement('li');
+        var li = elm('li');
         ul.appendChild(li);
 
-        var ch = document.createElement('input');
+        var ch = elm('input');
         ch.type = 'checkbox';
         ch.checked = x;
 
         if(e[0]) {
-          var lb = document.createElement('label');
+          var lb = elm('label');
           lb.innerHTML = `<b>${e[0]}</b>`;
           li.appendChild(lb);
           lb.insertAdjacentElement('afterbegin', ch);
         }
 
-        var tx = document.createElement('input');
+        var tx = elm('input');
         tx.type = 'text';
         li.appendChild(tx);
 
         if(e[0] && e[3]) {
-          var dl = document.createElement('datalist');
+          var dl = elm('datalist');
           dl.id = `wiki_ed_datalist_${e[0]}`;
           ul.appendChild(dl);
           tx.setAttribute('list', dl.id);
           e[3].forEach(n => {
-            var sg = document.createElement('option');
+            var sg = elm('option');
             sg.value = n;
             dl.appendChild(sg);
           });
@@ -132,8 +135,7 @@
     }
     else if(x.length) {
       x.forEach(n => {
-        var a = document.createElement('a');
-        a.classList.add('wiki_ed_button');
+        var a = elm('a', 'wiki_ed_button');
         a.innerHTML = n;
         w.appendChild(a);
         var o = com.body[n].option;
