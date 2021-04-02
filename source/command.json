@@ -42,6 +42,13 @@
     "inline":false,
     "noclose":false
   },
+  "module ThemePreviewer":{
+    "option":{
+      "noUi":["true",true]
+    },
+    "inline":true,
+    "noclose":true
+  },
   "module Redirect":{
     "option":{
       "destination":["http://www.example.com/",true]
