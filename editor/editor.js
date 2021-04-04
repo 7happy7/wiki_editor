@@ -40,7 +40,7 @@
     var _, bef = '', aft = '';
     while((_ = s[i1--]) && _ !== '\n') (bef = _ + bef, limit++);
     while((_ = s[i2++]) && _ !== '\n') (aft += _);
-    var m = bef.match(/\[{2}([a-z0-9 ]*?)$/i);
+    var m = bef.match(/\[{2}([^\[\]]*?)$/i);
     i1 += 4;// '[[' (2) + offset (2)
     m && (i1 += m.index);
     var d;
