@@ -90,6 +90,7 @@
         t.value = wrap.bef + body + wrap.aft;
         t.setSelectionRange(wrap.index, wrap.index + body.length);
         t.focus();
+        cond.filter(c => c.checked).forEach(c => c._text == e.target && c._name || (c._text.value || '').match(/^\S+?\="(.*?)"$/) && f({target:t}));
       }
 
       var lab = (e, x) => {
