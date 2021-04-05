@@ -3,9 +3,7 @@
   var debug_mode = false;
   var _log_ = (...arg) => debug_mode && console.log.call(console, ...arg);
   
-  var _jsonize = async (...fch) => await Promise.all(fch.map(f => f.json()));
-  var _fetches = async (...dir) => await Promise.all(dir.map(d => fetch(chrome.extension.getURL(d))));
-  var _getJSON = async (...dir) => await _jsonize(...(await _fetches(...dir)));
+  var _getJSON = async (...dir) => await Promise.all((await Promise.all(dir.map(d => fetch(chrome.extension.getURL(d))))).map(f => f.json()));
   
   var [command, config] = await _getJSON(
     '/source/command.json',
