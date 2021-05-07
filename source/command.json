@@ -9,6 +9,11 @@
     "inline":false,
     "noclose":false
   },
+  "iftags":{
+    "option":{},
+    "inline":false,
+    "noclose":false
+  },
   "module ListPages":{
     "option":{
       "pagetype":["*",false],
